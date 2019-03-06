@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>美食天下</title>
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <script src="js/jquery.js"></script>
+    <script src="lunbo/js/jquery.waterwheelCarousel.min.js"></script>
+    <script src="layui/layui.js"></script>
+    <script src="bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+
+
+    <script src="js/vue.js"></script>
+    <style type="text/css">
+        #carousel {
+            width: 800px;
+            height: 300px;
+            display: relative;
+        }
+
+        #carousel img {
+            display: hidden; /* hide images until carousel prepares them */
+            cursor: pointer; /* not needed if you wrap carousel items in links */
+        }
+    </style>
+</head>
+<body>
+<div style="background: #E2CCA3">
+
+
+    <ul class="layui-nav" lay-filter="">
+
+        <li style="float: left">
+            <div style="margin-top: 5px"><img src="picture/logo/logo.png" width="100px" height="50px"></div>
+        </li>
+
+
+        <li class="layui-nav-item" lay-separator="|"><a href="index.html">首页</a></li>
+        <li class="layui-nav-item layui-this"><a href="caidanshouye.html">菜谱</a></li>
+        <li class="layui-nav-item"><a href="">饮食文化</a></li>
+        <li class="layui-nav-item">
+            <a href="javascript:;">后台服务</a>
+            <dl class="layui-nav-child"> <!-- 二级菜单 -->
+                <dd><a href="">移动模块</a></dd>
+                <dd><a href="">后台模版</a></dd>
+                <dd><a href="">电商平台</a></dd>
+            </dl>
+        </li>
+        <li class="layui-nav-item"><a href="">评价</a></li>
+        <div style="float: right">
+            <span id="dd">
+            <span v-if="seen"><li class="layui-nav-item"><a href="login.html">登录</a></li>
+                <li class="layui-nav-item"><a href="register.html">注册</a></li></span></span>
+            <li class="layui-nav-item">
+                <a href="">个人中心<span class="layui-badge-dot"></span></a>
+            </li>
+            <li class="layui-nav-item layui-anim-rotate">
+
+                <a href=""><img src="//t.cn/RCzsdCq" class="layui-nav-img"><span id="user">我</span></a>
+                <dl class="layui-nav-child">
+                    <dd><a href="javascript:;">修改信息</a></dd>
+                    <dd><a href="javascript:;">安全管理</a></dd>
+                    <dd><a href="javascript:loginout()">退出</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item"><a href="qingdan.html">下单结算</a></li>
+        </div>
+        <a id="top"></a>
+    </ul>
+
+
+    <div class="container">
+        <div class="row" style="margin-top: 40px">
+            <div class="col-md-2">
+                <img alt="Brand" src="picture/logo/logo.png" height="80px" width="150px" style="margin-left: 30px">
+            </div>
+            <div class="col-md-10">
+                <div class="alert alert-info" role="alert" style="width: 800px;height: 80px">
+                    <p style="margin-top: 15px">上班吃饭不再难，只为您舌尖上的享受，营养搭配，干活不累！！！！！</p></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div id="xiangqing">
+                <div>
+                    <div class="col-xs-6 col-md-3" style="margin-top: 30px;margin-left: 15px">
+                        <div class="thumbnail layui-anim layui-anim-scaleSpring ">
+                            <img :src="souce.kPicture" alt="...">
+                        </div>
+                    </div>
+
+                    <div class="col-xs-6 col-md-3" style="margin: 15px;margin-top: 60px">
+
+                        <h3 style="font-size: large"><strong>{{souce.kName}}</strong></h3>
+                        <p><span>评价：</span>{{souce.kComm}}</p>
+                        <p><span>材料：</span>{{souce.xCailiao}}</p>
+                        <p><span>功效：</span>{{souce.xGongxiao}}</p>
+                        <p><span>味道：</span>{{souce.xWeidao}}</p>
+                        <p><span>赠送：</span>{{souce.xZengsong}}</p>
+                        <p><span>{{souce.kPrice}}</span><span>元</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                            <a @click="spdetail(souce.kId)" class="btn btn-primary" role="button">下单</a>
+
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="row" style="margin-left: 15px;margin-top: 30px">
+            <div><strong>热推菜</strong></div>
+            <div>
+                <div class="alert alert-warning" role="alert" style="margin-top: 15px;height: 300px;">
+                    <div id="carousel" class="container">
+                        <div id="retui">
+                            <div v-for="p in list">
+                                <a @click="xiangqing(p.kId)"><div style="margin-left: 10px"><img :src="p.kPicture"
+                                                                                       style="height: 200px;width: 200px;float: left;margin-left: 10px">
+                                    &nbsp;&nbsp;</div></a>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div id="carousel" class="container">
+                        <img src="picture/caidan/1.jpg"style="height: 200px;width: 200px;float: left;margin-left: 10px">
+                        <img src="picture/caidan/2.jpg"style="height: 200px;width: 200px">
+                        <img src="picture/caidan/3.jpg"style="height: 200px;width: 200px">
+                        <img src="picture/caidan/4.jpg"style="height: 200px;width: 200px">
+                        <img src="picture/caidan/5.jpg"style="height: 200px;width: 200px">
+                        <img src="picture/caidan/6.jpg"style="height: 200px;width: 200px">
+                        <img src="picture/caidan/7.png"style="height: 200px;width: 200px">
+                        <img src="picture/caidan/8.jpg"style="height: 200px;width: 200px">
+                        <img src="picture/caidan/1.jpg"style="height: 200px;width: 200px">
+                        <img src="picture/caidan/1.jpg"style="height: 200px;width: 200px">
+                    </div>-->
+                    <!--<img src="picture/caidan/1.jpg"style="height: 100px;width: 100px">&nbsp;&nbsp;
+                    <img src="picture/caidan/2.jpg"style="height: 100px;width: 100px">&nbsp;&nbsp;
+                    <img src="picture/caidan/3.jpg"style="height: 100px;width: 100px">&nbsp;&nbsp;
+                    <img src="picture/caidan/4.jpg"style="height: 100px;width: 100px">&nbsp;&nbsp;
+                    <img src="picture/caidan/5.jpg"style="height: 100px;width: 100px">&nbsp;&nbsp;
+                    <img src="picture/caidan/6.jpg"style="height: 100px;width: 100px">&nbsp;&nbsp;
+                    <img src="picture/caidan/7.png"style="height: 100px;width: 100px">&nbsp;&nbsp;
+                    <img src="picture/caidan/8.jpg"style="height: 100px;width: 100px">&nbsp;&nbsp;
+                    <img src="picture/caidan/1.jpg"style="height: 100px;width: 100px">&nbsp;&nbsp;
+                    <img src="picture/caidan/1.jpg"style="height: 100px;width: 100px">-->
+
+
+                </div>
+            </div>
+        </div>
+        <script>
+            $(document).ready(function () {
+                $("#carousel").waterwheelCarousel({
+                    carouselSpeed: 1000,
+                    autoPlay: 1000,
+                    startingFeature: 5,
+                    pauseOnHover: true,
+                    stopOnHover: true,
+                    leftButtonTag: '#carousel-left',
+                    rightButtonTag: '#carousel-right'
+                });
+            });
+        </script>
+
+        <div class="row" style="margin-left: 15px;margin-top: 30px">
+            <div><strong>网友评论</strong></div>
+        </div>
+        <div class="row" style="margin-left: 15px;margin-top: 30px">
+            <div style="width: 1140px;height: 2000px;border: 1px;background-color: white">
+                <div>
+                    <div id="pingjia">
+                        <div class="btn-group" role="group" aria-label="..." style="margin-top: 15px;margin-left: 20px">
+                            <button type="button" class="btn btn-default" style="background-color: pink"
+                                    @click="weidaozan(1)">味道赞
+                            </button>
+                            <button type="button" class="btn btn-default"
+                                    style="margin-left: 10px;background-color: pink" @click="fuwuzhoudao(2)">服务周到
+                            </button>
+                            <button type="button" class="btn btn-default"
+                                    style="margin-left: 10px;background-color: pink" @click="kuaisusongda(3)">快速送达
+                            </button>
+                        </div>
+                        <div v-for="p in list">
+                            <div>
+                                <a href="" style="margin-left: 30px;margin-top: 100px"><img :src="p.uTouxiang"
+                                                                                            class="layui-nav-img"
+                                                                                            style="width: 70px;height: 70px;margin-top: 30px">{{p.uName}}</a>
+                                <div id="test1" style="margin-left: 30px"></div>
+
+                                <script>
+                                    layui.use('rate', function () {
+                                        var rate = layui.rate;
+
+                                        //渲染
+                                        var ins1 = rate.render({
+                                            elem: '#test1'  //绑定元素
+                                        });
+                                    });
+                                </script>
+                                <div style="float: right;margin-right: 100px;">
+                                    <span>{{p.pCreatetime}}</span>
+                                </div>
+                                <div class="container">
+                                    <div class="row">
+                                        <div style=";margin-left: 100px">
+                                            <span>{{p.pComment}}</span>
+                                        </div>
+                                        <div style="color: #00FFFF;margin-left: 100px;margin-top: 15px">
+                                            <span>商家回复：</span><span>{{p.pResponce}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <hr>
+        <div id="d3">
+            <strong><a href="" style="color: coral">美食天下 - 让吃更美好</a></strong>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <div style="margin-top: 15px">
+                    <li style="float: left; "><a>关于我们</a><span>&gt;&gt;&gt;</span></li>
+                    <li style="float: left"><a>联系我们</a><span>&gt;&gt;&gt;</span></li>
+                    <li style="float: left"><a>加入我们</a><span>&gt;&gt;&gt;</span></li>
+                    <li style="float: left"><a>服务声明</a><span>&gt;&gt;&gt;</span></li>
+                    <li style="float: left"><a>友情链接</a><span>&gt;&gt;&gt;</span></li>
+                    <li style="float: left"><a>网站地图</a></li>
+
+
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="thumbnail" style="height: 110px;width: 100px;">
+                    <img src="picture/erweima/20190223200306.jpg" alt="..." style="height: 100px;width: 100px;">
+
+                </div>
+                <div class="caption" style="text-align: center">
+                    <h3 style="font-size: small"> &nbsp;&nbsp;&nbsp;美食网</h3>
+                </div>
+            </div>
+
+        </div>
+        <div>
+            <strong>友情链接：</strong>&nbsp;&nbsp;
+            <a style="color: grey;font-size: small">愉悦妈妈</a>&nbsp;&nbsp;
+            <a style="color: grey;font-size: small">自乐游</a>&nbsp;&nbsp;
+            <a style="color: grey;font-size: small">爱奇艺生活</a>&nbsp;&nbsp;
+            <a style="color: grey;font-size: small">中华美食网</a>&nbsp;&nbsp;
+            <a style="color: grey;font-size: small">太平洋亲子网</a>&nbsp;&nbsp;
+            <a style="color: grey;font-size: small">美食杰</a>&nbsp;&nbsp;
+            <a style="color: grey;font-size: small">红餐肉</a>&nbsp;&nbsp;
+            <a style="color: grey;font-size: small">食品商务网</a>&nbsp;&nbsp;
+            <a style="color: grey;font-size: small">妈妈网</a>&nbsp;&nbsp;
+            <a style="color: grey;font-size: small">亲宝网</a>&nbsp;&nbsp;
+            <a style="color: grey;font-size: small">糖豆网</a>&nbsp;&nbsp;
+            <a style="color: grey;font-size: small">慧聪网</a>&nbsp;&nbsp;
+            <div class="container">
+                <a href="#top" style="float: right"><img src="picture/logo/gotop.png"
+                                                         style="position:fixed;bottom:0;height: 70px;height: 70px"></a>
+            </div>
+        </div>
+        <div style="margin-top: 15px;color: grey;font-size: small;">
+            <li>版权所有&nbsp;&nbsp;@&nbsp;&nbsp;2014-2019&nbsp;&nbsp;
+                <a style="color: grey">美食天下</a>&nbsp;&nbsp;保留所有版权-
+                <a style="color: grey"><img src="picture/logo/beian.png"> 京公网安备 11010502031041号 </a>&nbsp;&nbsp;
+                <img src="picture/logo/1550926251(1).png" style="float: right;">
+            </li>
+        </div>
+
+    </div>
+
+</div>
+
+
+</div>
+
+
+</div>
+<script>
+    var params = window.location.search;
+    var appData = new Vue({
+        el: '#xiangqing',
+        data: {
+            souce: {}
+        },
+        mounted() {
+            var _this = this;
+            $.ajax({
+                type: "post",
+                url: "caipin/vcaidan.do" + params,
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    if (data.code == 1) {
+                        _this.souce = data.info
+                        console.log(_this.souce)
+                    } else {
+                        alert(data.info);
+                    }
+
+                },
+                error: function () {
+                    alert("ajax请求失败");
+                }
+            })
+        },
+        methods: {
+            spdetail: function (id) {
+                $.ajax({
+                    type: "post",
+                    url: "order/addOrder.do?oKId=" + id,
+                    dataType: "json",
+                    async: false,
+                    success: function (data) {
+                        if (data.code == 1) {
+                            alert("确认点菜？");
+                            //window.location.href="index.html";
+                        } else {
+                            alert(data.info);
+                        }
+                    },
+                    error: function () {
+                        alert("ajax请求失败");
+                    }
+                })
+            }
+        }
+    })
+</script>
+
+<script>
+    var app = new Vue({
+        el: "#dd",
+        data: {
+            seen: true
+        }
+    })
+    var params = window.location.search;
+    $(function () {
+        $.ajax({
+            type: "post",
+            url: "user/login1.do",
+            dataType: "json",
+            success: function (data) {
+                if (data.code == 1) {
+                    var infos = data.info;
+                    if (infos != null) {
+                        app.seen = false;
+
+                    } else {
+                        // alert(infos.uName);
+                        $("#user").html(infos.uName);
+                    }
+                }
+            },
+            error: function () {
+
+            }
+        })
+
+    })
+
+    function loginout() {
+        $.ajax({
+            type: "get",
+            url: "user/loginout.do",
+            dataType: "json",
+            success: function (data) {
+                if (data.code == 1) {
+                    window.location.href = "index.html";
+                }
+            },
+            error: function () {
+                alert("ajax请求异常");
+            }
+        })
+    }
+</script>
+
+
+</div>
+<script>
+    var appre = new Vue({
+        el: "#retui",
+        data: {
+            list: []
+        },
+        mounted() {
+            var _this = this;
+            $.ajax({
+                type: "post",
+                url: "caipin/retuicai.do",
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    if (data.code == 1) {
+                        _this.list = data.info
+                        console.log(_this.list)
+                    } else {
+                        alert(data.info);
+                    }
+
+                },
+                error: function () {
+                    alert("ajax请求失败");
+                }
+            })
+        },
+        methods: {
+            xiangqing: function (id) {
+                window.location.href = "danpincaidanpingjia.html?kId=" + id;
+            }
+        }
+
+    })
+</script>
+<script>
+    var params = window.location.search;
+    var appData = new Vue({
+        el: '#pingjia',
+        data: {
+            list: []
+        },
+        mounted() {
+            var _this = this;
+            $.ajax({
+                type: "post",
+                url: "pingjia/pingjia.do" + params,
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    if (data.code == 1) {
+                        _this.list = data.info
+                        console.log(_this.list)
+                    } else {
+                        alert(data.info);
+                    }
+
+                },
+                error: function () {
+                    alert("ajax请求失败");
+                }
+            })
+        },
+        methods: {
+
+            weidaozan: function (state) {
+                var _this = this;
+                $.ajax({
+                    type: "post",
+                    url: "pingjia/weidaozan.do" + params,
+                    data: {
+                        state: state
+                    },
+                    dataType: "json",
+                    async: false,
+                    success: function (data) {
+                        if (data.code == 1) {
+                            _this.list = data.info
+                            console.log(_this.list)
+                        } else {
+                            alert(data.info);
+                        }
+
+                    },
+                    error: function () {
+                        alert("ajax请求失败");
+                    }
+                })
+            },
+            fuwuzhoudao: function (state) {
+                var _this = this;
+                $.ajax({
+                    type: "post",
+                    url: "pingjia/weidaozan.do" + params,
+                    data: {
+                        state: state
+                    },
+                    dataType: "json",
+                    async: false,
+                    success: function (data) {
+                        if (data.code == 1) {
+                            _this.list = data.info
+                            console.log(_this.list)
+                        } else {
+                            alert(data.info);
+                        }
+
+                    },
+                    error: function () {
+                        alert("ajax请求失败");
+                    }
+                })
+            },
+            kuaisusongda: function (state) {
+                var _this = this;
+                $.ajax({
+                    type: "post",
+                    url: "pingjia/weidaozan.do" + params,
+                    data: {
+                        state: state
+                    },
+                    dataType: "json",
+                    async: false,
+                    success: function (data) {
+                        if (data.code == 1) {
+                            _this.list = data.info
+                            console.log(_this.list)
+                        } else {
+                            alert(data.info);
+                        }
+
+                    },
+                    error: function () {
+                        alert("ajax请求失败");
+                    }
+                })
+            }
+
+        }
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-if="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Vue.js</title>
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <script src="js/jquery.js"></script>
+    <script src="js/vue.js"></script>
+    <script src="layui/layui.js"></script>
+    <script src="bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div id="dd">{{obj.msg}}</div>
+<button onclick="loadDate()">按钮</button>
+<script>
+    var app = new Vue({
+        el:"#dd",
+        data:{
+            obj:[]
+        }
+    });
+    function loadDate() {
+        app.obj={
+            msg:"当前时间"+ new Date()
+        }
+    }
+</script>
+<div id="app-3">
+    <p v-if="message">现在你看到我了</p>
+</div>
+<script>
+    $(function() {
+        look();
+        see();
+    })
+    var app3 = new Vue({
+        el: '#app-3',
+        data: {
+            message: true
+        }
+    })
+
+    function look() {
+        if (3> 1) {
+            app3.message = false;
+        }
+    }
+</script>
+<div id="dds">
+    <p v-if="seen">121342435435634674576</p>
+</div>
+<script>
+    var app = new Vue({
+        el:"#dds",
+        data:{
+            seen:true
+        }
+    })
+    function see() {
+        if (3 >1) {
+            app.seen=false;
+        }
+    }
+</script>
+<div id="app">
+    <ol>
+        <li v-for="todo in todos">
+            {{todo.text}}
+        </li>
+    </ol>
+</div>
+<script>
+    var app4 = new Vue({
+        el: '#app',
+        data: {
+            todos: [
+                { text: '学习 JavaScript' },
+                { text: '学习 Vue' },
+                { text: '整个牛项目' }
+            ]
+        }
+    })
+
+</script>
+<div id="onclick">
+    <p>
+        {{message}}
+    </p>
+    <button v-on:click="click">button</button>
+</div>
+<script>
+    var apps = new Vue({
+        el:"#onclick",
+        data:{
+            message:"我是谁"
+        },
+        methods:{
+            click:function() {
+                apps.message="我在哪儿";
+            }
+        }
+    })
+
+</script>
+ <div id="input">
+     <input v-model="message">
+
+ </div>
+<script>
+    var ass = new Vue({
+        el:"#input",
+        data:{
+            message:"woshi"
+        }
+
+    })
+</script>
+
+
+<!--
+<script>
+    layer.msg('hello');
+</script>
+-->
+
+
+<script>
+
+    layui.use('layer', function(){
+        var  layer = layui.layer;
+
+        layer.msg('hello');
+    });
+</script>
+<!--<script>
+    layer.open({
+        type: 1,
+        content: '传入任意的文本或html' //这里content是一个普通的String
+    });
+</script-->>
+<button onclick="add()">新增</button>
+<button onclick="zhuce()">注册</button>
+<script>
+    var layer;
+    layui.use(['layer','form'],function () {
+        layer = layui.layer;
+        var form = layui.form;
+
+        //监听提交
+        form.on('submit(formDemo)', function(data){
+            //layer.msg(JSON.stringify(data.field));
+            $.ajax({
+                url:"user/login.do",
+                method:'post',
+                data:$("#fm").serialize(),
+                success:function (obj) {
+                    if (obj.code == 1) {
+                        layer.msg("登陆成功");
+                        // alert(obj.info.uName);
+                        window.location.href="index.html";
+                    } else {
+                        layer.msg("登录失败"+ obj.code);
+                    }
+                }
+
+
+            })
+            return false;
+        });
+        form.on('submit(formD)', function(data){
+            //layer.msg(JSON.stringify(data.field));
+            var password = $("input[name='uPassword']").val();
+            var repassword = $("input[name='repassword']").val();
+            if (password != repassword) {
+                alert("您两次输入的密码不同，请重新输入");
+                return false;
+            }
+            // alert(password);
+            // layer.msg($("#fm1").serialize());
+            $.ajax({
+                url:"user/adduser.do",
+                method:"POST",
+                data:$("#fm1").serialize(),
+                success:function (obj) {
+                    if(obj.code==1){
+                        layer.msg("新增成功");
+                        window.location.href="login.html"
+                    }else{
+                        layer.msg("新增失败："+obj.info);
+                    }
+                }
+            });
+            return false;
+        });
+
+    });
+    function add() {
+        layer.open({
+            type:1,
+            content:$("#fmadd"),
+            area:['500px','300px']
+
+        });
+    }
+    function zhuce() {
+        layer.open({
+            type:1,
+            content:$("#zhu"),
+            area:['500px','460px']
+
+        });
+    }
+</script>
+<div id="fmadd" class="layui-container" style="display: none;width: 500px">
+    <form id="fm" class="layui-form" action="" style="background-color: white;margin-top: 40px;" onsubmit="return false">
+
+        <div style="margin-top: 15px">
+            <div class="layui-form-item" >
+                <label class="layui-form-label" >用户名</label>
+                <div class="layui-input-block">
+                    <input type="text" name="name" required  lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input" style="width: 300px">
+                </div>
+            </div>
+            <div class="layui-form-item" >
+                <label class="layui-form-label" >密码</label>
+                <div class="layui-input-block">
+                    <input type="password" name="password" required  lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input" style="width: 300px">
+                </div>
+            </div>
+
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="formDemo">登录</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div id="zhu" class="layui-container" style="display: none;width: 500px">
+    <form  class="layui-form" action="" style="background-color: white;margin-top: 30px;" id="fm1" onsubmit="return false">
+
+        <div style="margin-top: 15px">
+            <div class="layui-form-item" >
+                <label class="layui-form-label" >用户名</label>
+                <div class="layui-input-block">
+                    <input type="text" name="uName" required  lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input" style="width: 300px">
+                </div>
+            </div>
+            <div class="layui-form-item" >
+                <label class="layui-form-label" >密码</label>
+                <div class="layui-input-block">
+                    <input type="password" name="uPassword" required  lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input" style="width: 300px">
+                </div>
+            </div>
+            <div class="layui-form-item" >
+                <label class="layui-form-label" >密码</label>
+                <div class="layui-input-block">
+                    <input type="password" name="repassword" required  lay-verify="required" placeholder="请再次输入密码" autocomplete="off" class="layui-input" style="width: 300px">
+                </div>
+            </div>
+            <div class="layui-form-item" >
+                <label class="layui-form-label" >手机号</label>
+                <div class="layui-input-block">
+                    <input type="text" name="uPhone" required  lay-verify="required" placeholder="请输入手机号" autocomplete="off" class="layui-input" style="width: 300px">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">性别</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="uGender" value="男" title="男">
+                    <input type="radio" name="uGender" value="女" title="女" checked>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="formD">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!--<script>
+    //Demo
+    layui.use('form', function(){
+        var form = layui.form;
+
+        //监听提交
+        form.on('submit(formDemo)', function(data){
+            // layer.msg(JSON.stringify(data.field));
+            $.ajax({
+                url:"user/login.do",
+                method:'post',
+                data:$("#fm").serialize(),
+                success:function (obj) {
+                    if (obj.code == 1) {
+                        layer.msg("登陆成功");
+                        // alert(obj.info.uName);
+                        window.location.href="index.html?uName=" + obj.info.uName;
+                    } else {
+                        layer.msg("登录失败"+ obj.code);
+                    }
+                }
+
+
+            })
+            return false;
+        });
+    });
+
+</script>-->
+
+</body>
+</html>

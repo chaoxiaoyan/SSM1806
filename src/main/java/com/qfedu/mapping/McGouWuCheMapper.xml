@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qfedu.dao.McGouWuCheMapper">
+  <resultMap id="BaseResultMap" type="com.qfedu.domain.McGouWuChe">
+    <id column="g_id" jdbcType="INTEGER" property="gId" />
+    <result column="g_k_" jdbcType="INTEGER" property="gK" />
+    <result column="g_u_id" jdbcType="INTEGER" property="gUId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    g_id, g_k_, g_u_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mc_gouwuche
+    where g_id = #{gId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from mc_gouwuche
+    where g_id = #{gId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.qfedu.domain.McGouWuChe">
+    insert into mc_gouwuche (g_id, g_k_, g_u_id
+      )
+    values (#{gId,jdbcType=INTEGER}, #{gK,jdbcType=INTEGER}, #{gUId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.qfedu.domain.McGouWuChe">
+    insert into mc_gouwuche
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="gId != null">
+        g_id,
+      </if>
+      <if test="gK != null">
+        g_k_,
+      </if>
+      <if test="gUId != null">
+        g_u_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="gId != null">
+        #{gId,jdbcType=INTEGER},
+      </if>
+      <if test="gK != null">
+        #{gK,jdbcType=INTEGER},
+      </if>
+      <if test="gUId != null">
+        #{gUId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.qfedu.domain.McGouWuChe">
+    update mc_gouwuche
+    <set>
+      <if test="gK != null">
+        g_k_ = #{gK,jdbcType=INTEGER},
+      </if>
+      <if test="gUId != null">
+        g_u_id = #{gUId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where g_id = #{gId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.qfedu.domain.McGouWuChe">
+    update mc_gouwuche
+    set g_k_ = #{gK,jdbcType=INTEGER},
+      g_u_id = #{gUId,jdbcType=INTEGER}
+    where g_id = #{gId,jdbcType=INTEGER}
+  </update>
+</mapper>

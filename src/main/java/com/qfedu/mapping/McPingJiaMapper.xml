@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qfedu.dao.McPingJiaMapper">
+  <resultMap id="BaseResultMap" type="com.qfedu.domain.McPingJia">
+    <id column="p_id" jdbcType="INTEGER" property="pId" />
+    <result column="p_u_id" jdbcType="INTEGER" property="pUId" />
+    <result column="p_k_id" jdbcType="INTEGER" property="pKId" />
+    <result column="p_comment" jdbcType="VARCHAR" property="pComment" />
+    <result column="p_responce" jdbcType="VARCHAR" property="pResponce" />
+    <result column="p_createTime" jdbcType="VARCHAR" property="pCreatetime" />
+    <result column="p_state" jdbcType="VARCHAR" property="pState" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    p_id, p_u_id, p_k_id, p_comment, p_responce, p_createTime, p_state
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mc_pingjia
+    where p_id = #{pId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from mc_pingjia
+    where p_id = #{pId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.qfedu.domain.McPingJia">
+    insert into mc_pingjia (p_id, p_u_id, p_k_id, 
+      p_comment, p_responce, p_createTime, 
+      p_state)
+    values (#{pId,jdbcType=INTEGER}, #{pUId,jdbcType=INTEGER}, #{pKId,jdbcType=INTEGER}, 
+      #{pComment,jdbcType=VARCHAR}, #{pResponce,jdbcType=VARCHAR}, #{pCreatetime,jdbcType=VARCHAR}, 
+      #{pState,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.qfedu.domain.McPingJia">
+    insert into mc_pingjia
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="pId != null">
+        p_id,
+      </if>
+      <if test="pUId != null">
+        p_u_id,
+      </if>
+      <if test="pKId != null">
+        p_k_id,
+      </if>
+      <if test="pComment != null">
+        p_comment,
+      </if>
+      <if test="pResponce != null">
+        p_responce,
+      </if>
+      <if test="pCreatetime != null">
+        p_createTime,
+      </if>
+      <if test="pState != null">
+        p_state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="pId != null">
+        #{pId,jdbcType=INTEGER},
+      </if>
+      <if test="pUId != null">
+        #{pUId,jdbcType=INTEGER},
+      </if>
+      <if test="pKId != null">
+        #{pKId,jdbcType=INTEGER},
+      </if>
+      <if test="pComment != null">
+        #{pComment,jdbcType=VARCHAR},
+      </if>
+      <if test="pResponce != null">
+        #{pResponce,jdbcType=VARCHAR},
+      </if>
+      <if test="pCreatetime != null">
+        #{pCreatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="pState != null">
+        #{pState,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.qfedu.domain.McPingJia">
+    update mc_pingjia
+    <set>
+      <if test="pUId != null">
+        p_u_id = #{pUId,jdbcType=INTEGER},
+      </if>
+      <if test="pKId != null">
+        p_k_id = #{pKId,jdbcType=INTEGER},
+      </if>
+      <if test="pComment != null">
+        p_comment = #{pComment,jdbcType=VARCHAR},
+      </if>
+      <if test="pResponce != null">
+        p_responce = #{pResponce,jdbcType=VARCHAR},
+      </if>
+      <if test="pCreatetime != null">
+        p_createTime = #{pCreatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="pState != null">
+        p_state = #{pState,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where p_id = #{pId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.qfedu.domain.McPingJia">
+    update mc_pingjia
+    set p_u_id = #{pUId,jdbcType=INTEGER},
+      p_k_id = #{pKId,jdbcType=INTEGER},
+      p_comment = #{pComment,jdbcType=VARCHAR},
+      p_responce = #{pResponce,jdbcType=VARCHAR},
+      p_createTime = #{pCreatetime,jdbcType=VARCHAR},
+      p_state = #{pState,jdbcType=VARCHAR}
+    where p_id = #{pId,jdbcType=INTEGER}
+  </update>
+
+
+  <select id="findBypKId" resultType="vpingjia">
+      SELECT pj.*, u.* FROM mc_pingjia pj
+      INNER JOIN mc_user u
+      ON pj.p_u_id = u.u_id
+      WHERE p_k_id = #{pKId}
+  </select>
+
+  <select id="findBypKIdAndState" resultType="vpingjia">
+      SELECT pj.*, u.* FROM mc_pingjia pj
+      INNER JOIN mc_user u
+      ON pj.p_u_id = u.u_id
+      WHERE p_k_id = #{pKId} AND p_state=#{state}
+  </select>
+</mapper>

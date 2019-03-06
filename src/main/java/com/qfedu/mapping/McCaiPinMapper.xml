@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qfedu.dao.McCaiPinMapper">
+  <resultMap id="BaseResultMap" type="com.qfedu.domain.McCaiPin">
+    <id column="k_id" jdbcType="INTEGER" property="kId" />
+    <result column="k_name" jdbcType="VARCHAR" property="kName" />
+    <result column="k_price" jdbcType="INTEGER" property="kPrice" />
+    <result column="k_comm" jdbcType="VARCHAR" property="kComm" />
+    <result column="k_caipin" jdbcType="VARCHAR" property="kCaipin" />
+    <result column="k_picture" jdbcType="VARCHAR" property="kPicture" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    k_id, k_name, k_price, k_comm, k_caipin, k_picture
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mc_caipin
+    where k_id = #{kId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from mc_caipin
+    where k_id = #{kId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.qfedu.domain.McCaiPin">
+    insert into mc_caipin (k_id, k_name, k_price, 
+      k_comm, k_caipin, k_picture
+      )
+    values (#{kId,jdbcType=INTEGER}, #{kName,jdbcType=VARCHAR}, #{kPrice,jdbcType=INTEGER}, 
+      #{kComm,jdbcType=VARCHAR}, #{kCaipin,jdbcType=VARCHAR}, #{kPicture,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.qfedu.domain.McCaiPin">
+    insert into mc_caipin
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="kId != null">
+        k_id,
+      </if>
+      <if test="kName != null">
+        k_name,
+      </if>
+      <if test="kPrice != null">
+        k_price,
+      </if>
+      <if test="kComm != null">
+        k_comm,
+      </if>
+      <if test="kCaipin != null">
+        k_caipin,
+      </if>
+      <if test="kPicture != null">
+        k_picture,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="kId != null">
+        #{kId,jdbcType=INTEGER},
+      </if>
+      <if test="kName != null">
+        #{kName,jdbcType=VARCHAR},
+      </if>
+      <if test="kPrice != null">
+        #{kPrice,jdbcType=INTEGER},
+      </if>
+      <if test="kComm != null">
+        #{kComm,jdbcType=VARCHAR},
+      </if>
+      <if test="kCaipin != null">
+        #{kCaipin,jdbcType=VARCHAR},
+      </if>
+      <if test="kPicture != null">
+        #{kPicture,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.qfedu.domain.McCaiPin">
+    update mc_caipin
+    <set>
+      <if test="kName != null">
+        k_name = #{kName,jdbcType=VARCHAR},
+      </if>
+      <if test="kPrice != null">
+        k_price = #{kPrice,jdbcType=INTEGER},
+      </if>
+      <if test="kComm != null">
+        k_comm = #{kComm,jdbcType=VARCHAR},
+      </if>
+      <if test="kCaipin != null">
+        k_caipin = #{kCaipin,jdbcType=VARCHAR},
+      </if>
+      <if test="kPicture != null">
+        k_picture = #{kPicture,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where k_id = #{kId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.qfedu.domain.McCaiPin">
+    update mc_caipin
+    set k_name = #{kName,jdbcType=VARCHAR},
+      k_price = #{kPrice,jdbcType=INTEGER},
+      k_comm = #{kComm,jdbcType=VARCHAR},
+      k_caipin = #{kCaipin,jdbcType=VARCHAR},
+      k_picture = #{kPicture,jdbcType=VARCHAR}
+    where k_id = #{kId,jdbcType=INTEGER}
+  </update>
+
+  <select id="findAll" resultType="mccaipin">
+    SELECT * FROM mc_caipin
+  </select>
+
+
+  <select id="paihang" resultType="mccaipin">
+    SELECT * FROM mc_caipin where k_state =#{state}
+  </select>
+
+  <select id="count" resultType="int">
+    SELECT count(*) FROM mc_caipin
+  </select>
+
+  <select id="findByIndexAndSize" resultType="mccaipin">
+    SELECT * FROM mc_caipin limit #{index},#{size}
+  </select>
+
+  <select id="selectOrder" resultType="mccaipin">
+    SELECT * FROM mc_caipin WHERE k_id in (SELECT o_k_id FROM mc_order WHERE o_u_id = #{oUId} )
+  </select>
+
+
+  <select id="findById" resultType="vcaidan">
+    SELECT * FROM mc_caipin cp
+    INNER JOIN mc_xiangqing xq
+    ON cp.k_id = xq.x_k_id
+    where k_id = #{kId}
+
+  </select>
+
+  <select id="retuicai" resultType="mccaipin" >
+    SELECT * FROM mc_caipin limit 10
+  </select>
+</mapper>

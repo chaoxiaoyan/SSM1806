@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户注册-美食天下</title>
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <script src="layui/layui.js"></script>
+    <script src="bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <script src="js/jquery.js"></script>
+
+    <style>
+        html{
+
+        }
+    </style>
+</head>
+<body  background="picture/denglu/20160720146900157818213.jpg" style="background-repeat: no-repeat;background-size:100% 100%;
+background-attachment: fixed;" >
+
+<ul class="layui-nav" lay-filter="">
+
+    <li style="float: left" ><div style="margin-top: 5px"><img src="picture/logo/logo.png" width="100px" height="50px"></div></li>
+    <li class="layui-nav-item"><a href="index.html">首页</a></li>
+    <li class="layui-nav-item layui-this"><a href="caidanshouye.html">菜谱</a></li>
+    <li class="layui-nav-item"><a href="">饮食文化</a></li>
+    <li class="layui-nav-item">
+        <a href="javascript:;">后台服务</a>
+        <dl class="layui-nav-child"> <!-- 二级菜单 -->
+            <dd><a href="">移动模块</a></dd>
+            <dd><a href="">后台模版</a></dd>
+            <dd><a href="">电商平台</a></dd>
+        </dl>
+    </li>
+    <li class="layui-nav-item"><a href="">评价</a></li>
+    <div style="float: right">
+
+        <li class="layui-nav-item" id="dss"><a href="login.html" v-if="seen">登录</a></li>
+        <li class="layui-nav-item"><a href="register.html">注册</a></li>
+        <li class="layui-nav-item">
+            <a href="">个人中心<span class="layui-badge-dot"></span></a>
+        </li>
+        <li class="layui-nav-item layui-anim-rotate">
+
+            <a href=""><img src="//t.cn/RCzsdCq" class="layui-nav-img">我</a>
+            <dl class="layui-nav-child">
+                <dd><a href="javascript:;">修改信息</a></dd>
+                <dd><a href="javascript:;">安全管理</a></dd>
+                <dd><a href="javascript:;">退了</a></dd>
+            </dl>
+        </li>
+
+
+
+    </div>
+</ul>
+
+<div  class="container">
+
+    <div class="row">
+
+        <div class="col-md-12">
+            <div style="width: 500px;border: 1px;margin-top: 100px">
+                <div style="text-align: center">
+                    <strong style="font-size:xx-large;text-align: center">欢迎注册快至人口账号</strong>
+                    <div style="margin-top: 10px">准备开启您的美味之旅</div>
+
+                </div>
+
+                    <form id="fm" class="layui-form" action="" style="background-color: white;margin-top: 30px;height: 230px" onsubmit="return false">
+                        <div class="col-md-6" style="text-align: center;width: 250px;height: 40px;background-color: grey;line-height: 35px">
+                            <a href="login.html" style="font-size: x-large;color: white"  >登录</a>
+                        </div>
+                        <div class="col-md-6" style="text-align: center;width: 250px;height: 40px;background-color: white;line-height: 35px">
+                            <a href="register.html" style="font-size: x-large;color: black">注册</a>
+                        </div>
+                        <div style="margin-top: 15px">
+                            <div class="layui-form-item" >
+                                <label class="layui-form-label" >用户名</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="name" required  lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input" style="width: 300px">
+                                </div>
+                            </div>
+                            <div class="layui-form-item" >
+                                <label class="layui-form-label" >密码</label>
+                                <div class="layui-input-block">
+                                    <input type="password" name="password" required  lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input" style="width: 300px">
+                                </div>
+                            </div>
+
+
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    <button class="layui-btn" lay-submit lay-filter="formDemo">立即登录</button>
+                                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                <script>
+                    //Demo
+                    layui.use('form', function(){
+                        var form = layui.form;
+
+                        //监听提交
+                        form.on('submit(formDemo)', function(data){
+                           // layer.msg(JSON.stringify(data.field));
+                            $.ajax({
+                                url:"user/login.do",
+                                method:'post',
+                                data:$("#fm").serialize(),
+                                success:function (obj) {
+                                    if (obj.code == 1) {
+                                        layer.msg("登陆成功");
+                                     // alert(obj.info.uName);
+                                        window.location.href="index.html?uName=" + obj.info.uName;
+                                    } else {
+                                        layer.msg("登录失败"+ obj.code);
+                                    }
+                                }
+
+
+                            })
+                            return false;
+                        });
+                    });
+
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
